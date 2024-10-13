@@ -12,6 +12,10 @@ function handleCors(res) {
 
 // Function to create the patients table if it doesn't exist
 async function createPatientsTable() {
+
+  console.log(db);
+  console.log(JSON.stringify(db));
+
   const createTableQuery = `
     CREATE TABLE IF NOT EXISTS patients (
       patientid INT AUTO_INCREMENT PRIMARY KEY,

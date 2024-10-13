@@ -1,25 +1,35 @@
-require("dotenv").config();
 const mysql = require("mysql2/promise");
+const dns = require("dns").promises;
 
-const dbConfig = {
-  host: process.env.MYSQL_HOST,
-  port: process.env.MYSQL_PORT,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-  multipleStatements: false,
-  namedPlaceholders: true,
-};
-
-function printEnv()
-{
-  console.log("This is bad. Delete this later.");
-  console.log(
-    `Host: ${process.env.MYSQL_HOST}\nPort: ${process.env.MYSQL_PORT}\nUser: ${process.env.MYSQL_USER}\nPassword: ${process.env.MYSQL_PASSWORD}\nDB: ${process.env.MYSQL_DATABASE}\n`
-  );
+async function getResolvedHost() {
+  try {
+    // Resolve the IP address of the MySQL host (sql.freedb.tech)
+    const addresses = await dns.lookup(
+      process.env.MYSQL_HOST || "sql.freedb.tech"
+    );
+    return addresses.address;
+  } catch (err) {
+    console.error("Error resolving DNS for MySQL host:", err);
+    throw new Error("Unable to resolve MySQL host");
+  }
 }
 
-printEnv();
-var database = mysql.createPool(dbConfig);
+async function createPool() {
+  const resolvedHost = await getResolvedHost(); // Resolve the host manually
+
+  const dbConfig = {
+    host: resolvedHost, // Use the resolved IP address
+    port: process.env.MYSQL_PORT || 3306,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    multipleStatements: false,
+    namedPlaceholders: true,
+  };
+
+  return mysql.createPool(dbConfig);
+}
+
+const database = createPool();
 
 module.exports = database;
