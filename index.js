@@ -27,7 +27,7 @@ async function createPatientsTable() {
     console.error(messages.tableCreationError, err.message);
     console.log("Full: " + JSON.stringify(err));
     console.log("DB: " + db);
-    console.log("DBJSON: " + JSON.stringify(db));
+    console.log("DBJSON: " + JSON.stringify(db.config));
   }
 }
 
