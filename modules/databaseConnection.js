@@ -30,6 +30,6 @@ async function createPool() {
   return mysql.createPool(dbConfig);
 }
 
-const database = createPool();
+const database = await createPool();
 
 module.exports = database;

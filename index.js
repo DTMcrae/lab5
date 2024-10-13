@@ -34,7 +34,7 @@ async function createPatientsTable() {
 }
 
 // Call the function to create the table on server start
-createPatientsTable();
+await createPatientsTable();
 
 // Create the HTTP server
 const server = http.createServer(async (req, res) => {
