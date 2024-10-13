@@ -1,24 +1,25 @@
-require("dotenv").config();
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 
 const dbConfig = {
-  host: "sql.freedb.tech",
-  port: "3306",
-  user: "freedb_p1root",
-  password: "UF5J9WMqg!&bWHx",
-  database: "freedb_4921_prod",
+  host: process.env.MYSQL_HOST || "sql.freedb.tech",
+  port: process.env.MYSQL_PORT || 3306,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   multipleStatements: false,
   namedPlaceholders: true,
 };
 
-function printEnv() {
-  console.log("This is bad. Delete this later.");
-  console.log(
-    `Host: ${process.env.MYSQL_HOST}\nPort: ${process.env.MYSQL_PORT}\nUser: ${process.env.MYSQL_USER}\nPassword: ${process.env.MYSQL_PASSWORD}\nDB: ${process.env.MYSQL_DATABASE}\n`
-  );
-}
+// Create a single connection
+const database = mysql.createConnection(dbConfig);
 
-printEnv();
-var database = mysql.createPool(dbConfig);
+// Connect to the database
+database.connect((err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err.message);
+  } else {
+    console.log("Connected to the database");
+  }
+});
 
 module.exports = database;
