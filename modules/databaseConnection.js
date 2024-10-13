@@ -19,6 +19,7 @@ function printEnv()
   );
 }
 
+printEnv();
 var database = mysql.createPool(dbConfig);
 
 module.exports = database;
