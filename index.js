@@ -25,7 +25,7 @@ async function createPatientsTable() {
     console.log("Patients table created or already exists.");
   } catch (err) {
     console.error(messages.tableCreationError, err.message);
-    console.log("Full: " + JSON.stringify(error));
+    console.log("Full: " + JSON.stringify(err));
   }
 }
 
