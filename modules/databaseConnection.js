@@ -2,11 +2,11 @@ require("dotenv").config();
 const mysql = require("mysql2/promise");
 
 const dbConfig = {
-  host: process.env.MYSQL_HOST,
-  port: process.env.MYSQL_PORT,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+  host: "sql.freedb.tech",
+  port: "3306",
+  user: "freedb_p1root",
+  password: "UF5J9WMqg!&bWHx",
+  database: "freedb_4921_prod",
   multipleStatements: false,
   namedPlaceholders: true,
 };
