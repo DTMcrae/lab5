@@ -27,9 +27,37 @@ async function createPool() {
     namedPlaceholders: true,
   };
 
-  return mysql.createPool(dbConfig);
+  return mysql.createPool(dbConfig); // Return the created pool
 }
 
-const database = await createPool();
+// Function to create the patients table after DB connection is initialized
+async function createPatientsTable(database) {
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS patients (
+      patientid INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(100),
+      dateOfBirth DATE
+    ) ENGINE=InnoDB;
+  `;
 
-module.exports = database;
+  try {
+    await database.query(createTableQuery); // Use the initialized pool
+    console.log("Patients table created or already exists.");
+  } catch (err) {
+    console.error("Error creating patients table:", err.message);
+  }
+}
+
+// Initialize the pool and create the table
+async function initDatabase() {
+  try {
+    const database = await createPool(); // Wait for the pool to be created
+    await createPatientsTable(database); // Create the patients table
+    return database; // Return the pool for further use
+  } catch (err) {
+    console.error("Error during database initialization:", err);
+    throw err; // Propagate the error if something goes wrong
+  }
+}
+
+module.exports = initDatabase;
