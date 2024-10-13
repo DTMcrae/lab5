@@ -1,6 +1,7 @@
 const http = require("http");
 const db = require("./modules/databaseConnection"); // Database connection module
 const messages = require("./lang/en/en"); // Load error messages
+const { error } = require("console");
 
 // Function to handle CORS
 function handleCors(res) {
@@ -24,6 +25,7 @@ async function createPatientsTable() {
     console.log("Patients table created or already exists.");
   } catch (err) {
     console.error(messages.tableCreationError, err.message);
+    console.log("Full: " + JSON.stringify(error));
   }
 }
 
